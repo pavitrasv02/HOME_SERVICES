@@ -1,0 +1,556 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load core_extras %}
+
+
+{% block title %}Home Services{% endblock %}
+
+
+{% block content %}
+<!-- All styles consolidated at the top -->
+<style>
+.service-card-icon img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: block;
+    margin: 0 auto;
+    border: 2px solid rgb(251, 239, 239);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.card {
+    transition: transform 0.2s;
+    border: none;
+    border-radius: 10px;
+}
+
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+
+.service-details {
+    font-size: 0.9rem;
+}
+
+
+.btn {
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+
+.list-unstyled li {
+    margin-bottom: 5px;
+}
+
+
+.fa-check {
+    font-size: 0.8rem;
+}
+
+
+.service-category {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+
+.service-category h2 {
+    color: #333;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #cde2f8;
+    padding-bottom: 10px;
+}
+
+
+.service-category .card {
+    border: 1px solid #e9ecef;
+}
+
+
+.service-category .card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+
+.service-category .btn-primary {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.service-category .service-details {
+    min-height: 150px;
+}
+
+
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+    flex-wrap: nowrap;
+}
+
+
+.service-card {
+    min-width: 220px;
+    max-width: 240px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    transition: box-shadow 0.2s;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.service-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+
+.service-card-icon {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+
+.service-card-icon i {
+    font-size: 3.2rem;
+    color: #007bff;
+    background: #e9f2ff;
+    border-radius: 50%;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+
+section.hero-section-bg {
+    background: url("{% static 'images/homepage_front.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 80vh;
+}
+
+
+.hero-main-card {
+    background: rgba(255,255,255,0.85) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    backdrop-filter: blur(6px);
+    border: none !important;
+    transition: none;
+}
+
+
+.hero-main-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    border: none !important;
+    transform: none;
+}
+
+
+.service-card-body .btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    margin-top: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.service-card-body .btn-primary {
+    background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+    border: none;
+    color: #fff;
+}
+.service-card-body .btn-primary:hover {
+    background: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+
+.service-card:hover .service-card-icon img {
+    transform: scale(1.15);
+}
+
+
+.service-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    width: 100%;
+}
+</style>
+
+
+
+
+
+
+<!-- Hero Section (Full Image, No Overlay/Text) -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+<div class="container-fluid py-5" style="background: #f8f9fa; min-height: 100vh; position: relative;">
+  <!-- Dots Pattern positioned to overlap -->
+  <div style="position: absolute; top: 20%; left: 75px; width: 170px; height: 180px; display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; opacity: 0.3; z-index: 3;">
+    {% for i in '12345678'|make_list %}
+      {% for j in '12345678'|make_list %}
+        <div style="width: 6px; height: 6px; background-color: #042647; border-radius: 50%;"></div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+  <!-- Overlay with semi-transparent white box -->
+  <div style="position: absolute; left: 0; top: 30%; height: 40%; width: 40%; background: rgba(255,255,255,0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 24px rgba(0,0,0,0.07); z-index: 2; padding: 40px;">
+    <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+      <div style="margin-bottom: 1.5rem;">
+        <div style="text-align: left; padding-left: 20px;">
+          <div style="display: flex; align-items: baseline; margin-bottom: 5px;">
+            <span style="font-family: 'Times New Roman', sans-serif; font-size: 18px; color: #042647; font-weight: 300; margin-right: 8px;">the</span>
+            <span style="font-family: 'Poppins', sans-serif; font-size: 42px; color: #042647; line-height: 1; font-weight: 700; text-transform: lowercase;">best</span>
+          </div>
+          <div>
+            <h1 style="font-family: 'Poppins', sans-serif; font-size: 64px; color: #042647; line-height: 1; margin: 0; font-weight: 900;">Solutions.</h1>
+          </div>
+        </div>
+      </div>
+      <p style="font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: #666; margin-bottom: 2rem; line-height: 1.6; font-style: italic;">"Great service is like a good magic trick—when its done right, you barely notice the effort, but you always leave with a smile!"</p>
+    </div>
+  </div>
+  <div class="row justify-content-center align-items-center" style="min-height: 80vh; margin-left: 300px; position: relative; z-index: 1;">
+    <div class="col-lg-12 p-0 position-relative" style="overflow: visible;">
+      <img src="{% static 'images/homepage_front.jpg' %}" alt="Hero" class="img-fluid w-100" style="object-fit: cover; min-height: 540px; max-height: 700px; box-shadow: 0 8px 32px rgba(0,0,0,0.10);">
+    </div>
+  </div>
+</div>
+
+
+<style>
+.hero-img-wrap {
+    min-height: 540px;
+    max-height: 700px;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+}
+.hero-overlay-half {
+    background: #fff;
+    height: 100%;
+    min-width: 340px;
+    z-index: 2;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+.hero-img-half img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    display: block;
+}
+.dots-pattern {
+    pointer-events: none;
+}
+@media (max-width: 900px) {
+  .hero-img-wrap { flex-direction: column; min-height: 400px; }
+  .hero-overlay-half, .hero-img-half { width: 100% !important; min-width: 0; }
+  .hero-overlay-half { min-height: 220px; }
+}
+</style>
+
+
+<!-- Custom Fonts and Styles -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+<style>
+body {
+    background: #f8f9fa !important;
+    font-family: 'Inter', Arial, sans-serif;
+}
+.hero-img-wrap {
+    position: relative;
+    width: 100%;
+    background: #fff;
+}
+.frosted-glass {
+    background: linear-gradient(90deg, rgba(255,255,255,0.92) 80%, rgba(255,255,255,0.2) 100%);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+}
+.navbar-nav .nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #222 !important;
+    letter-spacing: 0.5px;
+}
+.navbar-nav .nav-link.active {
+    color: #007bff !important;
+}
+</style>
+
+
+<!-- Reference-style Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="border-radius: 0 0 24px 24px; margin-bottom: 0;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold" href="#" style="font-size: 2rem; letter-spacing: 1px; font-family: 'Merriweather', serif;">HOME SERVICES</a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/cooking-services/">Order Food</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/my-bookings/">My Bookings</a>
+        </li>
+      </ul>
+    </div>
+    <form class="d-flex align-items-center" role="search" style="max-width: 180px;">
+      <input class="form-control border-0 bg-light rounded-pill me-2" type="search" placeholder="Search" aria-label="Search" style="min-width: 80px;">
+      <button class="btn btn-light rounded-circle d-flex align-items-center justify-content-center" type="submit" style="width: 38px; height: 38px;">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+  </div>
+</nav>
+
+<!-- Services Section -->
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Our Services</h1>
+    {% for service_type, type_name in service_types.items %}
+    <div class="mb-5">
+        <h2 class="mb-4" style="text-transform: uppercase; font-family: 'Times New Roman', Times, serif;">{{ type_name }}</h2>
+        <div class="horizontal-scroll">
+            {% for service in services_by_type|get_item:service_type %}
+            <div class="service-card">
+                <div class="service-card-icon" style="margin-bottom: 1.1rem;">
+                    {% if service.name == "Carpet & Upholstery Cleaning" %}
+                        <img src="{% static 'images/cleaning/carpet.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Climate Control" %}
+                        <img src="{% static 'images/home/climate.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Energy Monitoring" %}
+                        <img src="{% static 'images/home/energy.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Entertainment Systems" %}
+                        <img src="{% static 'images/home/entertain.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Lighting Automation" %}
+                        <img src="{% static 'images/home/light.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Security Systems" %}
+                        <img src="{% static 'images/home/security.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Voice Control" %}
+                        <img src="{% static 'images/home/voice.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Deep Cleaning Service" %}
+                        <img src="{% static 'images/cleaning/deep.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Move-in/Move-out Cleaning" %}
+                        <img src="{% static 'images/cleaning/move.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Regular House Cleaning" %}
+                        <img src="{% static 'images/cleaning/regular.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Window Cleaning Service" %}
+                        <img src="{% static 'images/cleaning/window.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Appliance Repairs" %}
+                        <img src="{% static 'images/maintanace/application.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Door & Window Repairs" %}
+                        <img src="{% static 'images/maintanace/door.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Electrical Work" %}
+                        <img src="{% static 'images/maintanace/electrical.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Handyman Services" %}
+                        <img src="{% static 'images/maintanace/hand.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Plumbing" %}
+                        <img src="{% static 'images/maintanace/plumbing.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Roof Repairs" %}
+                        <img src="{% static 'images/maintanace/roof.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Garden Maintenance" %}
+                        <img src="{% static 'images/garden/garden.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Irrigation Systems" %}
+                        <img src="{% static 'images/garden/outdoor.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Landscaping Design" %}
+                        <img src="{% static 'images/garden/land.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Lawn Care" %}
+                        <img src="{% static 'images/garden/lawn.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Outdoor Enhancements" %}
+                        <img src="{% static 'images/garden/outdoor.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Tree Service" %}
+                        <img src="{% static 'images/garden/tree.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "24/7 Security Monitoring" %}
+                        <img src="{% static 'images/security/24.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Access Control Systems" %}
+                        <img src="{% static 'images/security/access.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Alarm System Installation" %}
+                        <img src="{% static 'images/security/alarm.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Biometric Security Systems" %}
+                        <img src="{% static 'images/security/biometeric.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "CCTV Installation" %}
+                        <img src="{% static 'images/security/cctv.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Fire Safety Systems" %}
+                        <img src="{% static 'images/security/fire.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Intercom System Installation" %}
+                        <img src="{% static 'images/security/intercom.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Security Consultation" %}
+                        <img src="{% static 'images/security/security.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Smart Lock Security" %}
+                        <img src="{% static 'images/security/smart.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Daily Home Cook" %}
+                        <img src="{% static 'images/cooking/daily.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Event/Party Catering" %}
+                        <img src="{% static 'images/cooking/event.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Personal Chef at Home" %}
+                        <img src="{% static 'images/cooking/chef.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Specialty Cuisine Cooking" %}
+                        <img src="{% static 'images/cooking/special.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Tiffin Services" %}
+                        <img src="{% static 'images/cooking/tiffen.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Carpet Cleaning" %}
+                        <img src="{% static 'images/cleaning/carpet.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Deep Cleaning" %}
+                        <img src="{% static 'images/cleaning/deep.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Move-in/out Cleaning" %}
+                        <img src="{% static 'images/cleaning/move.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Window Cleaning" %}
+                        <img src="{% static 'images/cleaning/window.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Kids Meal Service" or service.name == "Kids' Meal Service" %}
+                        <img src="{% static 'images/cooking/kid_meal.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Home Network Setup" %}
+                        <img src="{% static 'images/home/home.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Garden Pest Control" %}
+                        <img src="{% static 'images/garden/garden.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Weed Control" %}
+                        <img src="{% static 'images/garden/weed.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Furniture Assembly" %}
+                        <img src="{% static 'images/maintanace/furniture.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Sanitization & Disinfection" %}
+                        <img src="{% static 'images/cleaning/sanitise.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% elif service.name == "Fire Extinguisher Installation" %}
+                        <img src="{% static 'images/security/fire_extingusher.png' %}" alt="{{ service.name }}" class="service-icon">
+                    {% else %}
+                        <img src="{% static 'images/cleaning/default.jpg' %}" alt="{{ service.name }}" class="service-icon">
+                    {% endif %}
+                </div>
+                <div class="service-card-body">
+                    <h5 class="service-card-title" style="font-family: 'Bahnschrift SemiLight Condensed', 'Bahnschrift', Arial, sans-serif; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; font-size: 1rem; text-align: center; text-transform: uppercase;">{{ service.name }}</h5>
+                    <p class="service-card-text" style="font-family: 'Bradley Hand ITC', cursive; font-size: 0.95rem; font-weight: 500; text-align: center;">{{ service.description }}</p>
+                    <a href="{% url 'service_detail' service.id %}" class="btn btn-primary" style="font-size: 0.95rem; letter-spacing: 1px;">BOOK NOW</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<!-- Search Results Section -->
+{% if providers %}
+<section class="container mb-5">
+    <h3 class="mb-4">Available Service Providers</h3>
+    <div class="row g-4">
+        {% for p in providers %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.name }}</h5>
+                    <p class="card-text">
+                        <i class="fas fa-tag me-2"></i>{{ p.get_service_type_display }}<br>
+                        <i class="fas fa-map-marker-alt me-2"></i>{{ p.location }}<br>
+                        <i class="fas fa-star me-2"></i>{{ p.rating }}/5.0
+                    </p>
+                    {% if p.experience_years %}
+                    <p class="card-text">
+                        <i class="fas fa-briefcase me-2"></i>{{ p.experience_years }} years experience
+                    </p>
+                    {% endif %}
+                    {% if p.hourly_rate %}
+                    <p class="card-text">
+                        <i class="fas fa-dollar-sign me-2"></i>{{ p.hourly_rate }}/hour
+                    </p>
+                    {% endif %}
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'book_provider' p.id %}" class="btn btn-primary flex-grow-1">
+                            <i class="fas fa-calendar-plus me-2"></i>Book Now
+                        </a>
+                        <a href="{% url 'provider_reviews' p.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-comments"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% elif providers is not none %}
+<div class="container">
+    <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle me-2"></i>No matching providers found.
+    </div>
+</div>
+{% endif %}
+
+
+<!-- Veg Flatbreads -->
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for item in flatbreads %}
+    <div class="col">
+        <div class="card food-card h-100">
+            <img src="{% static 'food/' %}{{ item.img }}" class="card-img-top food-img" alt="{{ item.name }}">
+            <div class="card-body d-flex flex-column justify-content-end">
+                <h5 class="card-title food-title">{{ item.name }}</h5>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<!-- Non-Veg Flatbreads -->
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for item in nv_flatbreads %}
+    <div class="col">
+        <div class="card food-card h-100">
+            <img src="{% static 'food/' %}{{ item.img }}" class="card-img-top food-img" alt="{{ item.name }}">
+            <div class="card-body d-flex flex-column justify-content-end">
+                <h5 class="card-title food-title">{{ item.name }}</h5>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
