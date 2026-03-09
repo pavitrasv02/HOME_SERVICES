@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    {% else %}
+                    {% elif service.name != "Carpet & Upholstery Cleaning" and service.name != "Carpet Cleaning" and service.service_type != 'cleaning' and service.service_type != 'maintenance' and service.service_type != 'gardening' and service.service_type != 'security' and service.service_type != 'automation' %}
                     <div class="mb-4">
                         <h4>Select Type</h4>
                         <button type="button" class="btn btn-outline-success" id="vegBtn" type="button">Veg</button>
