@@ -3,11 +3,8 @@ from . import views
 from .views import create_admin
 
 urlpatterns = [
-    path('create-admin/', create_admin),
-]
-
-urlpatterns = [
     path('', views.home, name='home'),
+    path('create-admin/', create_admin),
     path('book/<int:provider_id>/', views.book_provider, name='book_provider'),
     path('success/', views.booking_success, name='booking_success'),
     path('bookings/', views.view_bookings, name='view_bookings'),
