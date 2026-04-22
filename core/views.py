@@ -7,18 +7,17 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.contrib.auth.models import User as AdminUser  # avoid conflict
+from django.contrib.auth.models import User as AdminUser
 
 def create_admin(request):
-    if not AdminUser.objects.filter(username="admin").exists():
-        AdminUser.objects.create_superuser(
-            username="admin",
-            email="admin@gmail.com",
-            password="admin123"
-        )
-        return HttpResponse("✅ Superuser created!")
-    else:
-        return HttpResponse("⚠️ Superuser already exists!")
+    AdminUser.objects.all().delete()  # ⚠️ delete old admins
+
+    AdminUser.objects.create_superuser(
+        username="admin",
+        email="admin@gmail.com",
+        password="admin123"
+    )
+    return HttpResponse("🔥 Fresh admin created")
 
 from .models import (
     User, ServiceProvider, Service, Booking, 
