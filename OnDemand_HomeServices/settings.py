@@ -60,12 +60,10 @@ TEMPLATES = [
 # 7) Database
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
         conn_max_age=600,
-        ssl_require=not DEBUG,
+        ssl_require=True
     )
 }
-
 # 8) Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
