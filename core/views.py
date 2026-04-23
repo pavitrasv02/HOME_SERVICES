@@ -6,6 +6,18 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.models import User as AdminUser
+
+def create_admin(request):
+    AdminUser.objects.all().delete()  # ⚠️ delete old admins
+
+    AdminUser.objects.create_superuser(
+        username="admin",
+        email="admin@gmail.com",
+        password="admin123"
+    )
+    return HttpResponse("🔥 Fresh admin created")
 
 from .models import (
     User, ServiceProvider, Service, Booking, 
