@@ -64,7 +64,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -97,7 +103,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -130,7 +142,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -163,7 +181,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -196,7 +220,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -229,7 +259,13 @@
                         {% if service.includes %}
                         <div class="col-md-6">
                             <h3 class="h5">What's Included:</h3>
-                            <p>{{ service.includes }}</p>
+                            <ul>
+                                {% for line in service.details.splitlines %}
+                                  {% if line.strip %}
+                                    <li>{{ line|before_colon|safe }}</li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
                         </div>
                         {% endif %}
                     </div>

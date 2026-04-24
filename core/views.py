@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth.models import User as AdminUser
 
+
 def create_admin(request):
     AdminUser.objects.all().delete()  # ⚠️ delete old admins
 
@@ -379,8 +380,10 @@ def services(request):
 
 def service_detail(request, service_id):
     service = get_object_or_404(Service, id=service_id)
+    includes_list = service.includes.split(' ') if service.includes else []
     return render(request, 'service_detail.html', {
-        'service': service
+        'service': service,
+        'includes_list': includes_list
     })
 
 

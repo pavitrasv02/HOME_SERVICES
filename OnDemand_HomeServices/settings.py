@@ -60,8 +60,9 @@ TEMPLATES = [
 # 7) Database
 DATABASES = {
     'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}".replace('\\', '/'),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=not DEBUG,
     )
 }
 # 8) Password validation
